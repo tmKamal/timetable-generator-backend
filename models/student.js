@@ -8,4 +8,4 @@ const StudentSchema = new Schema({
   subGroupNumber: { type: Number, required: true },
 });
 
-module.exports = mongoose.model("Student", BuildingSchema);
+module.exports = mongoose.model("Student", StudentSchema);
