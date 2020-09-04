@@ -8,6 +8,7 @@ const mongoose =require('mongoose');
 
 
 const buildingRoutes=require('./routes/building-routes');
+const roomRoutes=require('./routes/room-routes');
 const HttpError = require('./models/http-error');
 
 const app=express();
@@ -38,6 +39,7 @@ if(process.env.NODE_ENV==='development'){
 //routes middleware
 
 app.use('/api/building',buildingRoutes);
+app.use('/api/room',roomRoutes);
 
 //Error Handler
 app.use((req, res, next) => {
