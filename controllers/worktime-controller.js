@@ -1,18 +1,17 @@
-const Workday = require('../models/workday');
+const WorkTime = require('../models/worktime');
 const HttpError = require('../models/http-error');
 
-const getWorkDays = async (req, res) => {
+const getWorkTime = async (req, res) => {
     let wdays;
     try {
         wdays = await Workday.find();
-
-        res.json(wdays[wdays.length - 1]);
+        res.json(wdays);
     } catch (err) {
         const error = new HttpError('Something went wrong on DB', 500);
         return next(error);
     }
     if (!wdays) {
-        const error = new HttpError('No Workdays found', 404);
+        const error = new HttpError('No WorkTime found', 404);
         return next(error);
     }
 };
@@ -48,12 +47,12 @@ const addWorkDays = async (req, res, next) => {
     } catch (err) {
         console.log(newWorkdays);
         const error = new HttpError(
-            'Workdays has not created successfully, error on db',
+            'Building has not created successfully, error on db',
             500
         );
         return next(error);
     }
 };
 
-exports.getWorkDays = getWorkDays;
-exports.addWorkDays = addWorkDays;
+exports.getWorkTime = getWorkTime;
+exports.addWorkTime = addWorkTime;
