@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 
 const buildingRoutes = require('./routes/building-routes');
 const workdayRoutes = require('./routes/workday-routes');
+const workTimeRoutes = require('./routes/worktime-routes');
 const HttpError = require('./models/http-error');
 
 const app = express();
@@ -33,6 +34,7 @@ if (process.env.NODE_ENV === 'development') {
 
 app.use('/api/building', buildingRoutes);
 app.use('/api/workdays', workdayRoutes);
+app.use('/api/worktime', workTimeRoutes);
 //Error Handler
 app.use((req, res, next) => {
     const error = new HttpError('page not found!', 404);

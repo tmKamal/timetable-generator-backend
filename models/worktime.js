@@ -12,7 +12,7 @@ const WorkTimeSchema = new Schema({
             required: true
         }
     },
-    slot: { type: Boolean, required: true }
+    slot: { type: Number, required: true }
 });
 
 module.exports = mongoose.model('WorkTime', WorkTimeSchema);

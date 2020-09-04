@@ -55,5 +55,44 @@ const addWorkDays = async (req, res, next) => {
     }
 };
 
+const updateWorkDays = async (req, res, next) => {
+    const {
+        monday,
+        tuesday,
+        wednesday,
+        thursday,
+        friday,
+        saturday,
+        sunday,
+        
+    } = req.body.days;
+    const days = {
+        monday,
+        tuesday,
+        wednesday,
+        thursday,
+        friday,
+        saturday,
+        sunday
+    };
+    const countDays = req.body.countDays;
+    const id = req.body.id;
+    try {
+        let workday = await Workday.findById(id);
+        workday.days = days;
+        workday.countDays = countDays;
+        await workday.save();
+        res.json(workday);
+    } catch (err) {
+        console.log(err);
+        const error = new HttpError(
+            'Workdays has not created successfully, error on db',
+            500
+        );
+        return next(error);
+    }
+};
+
 exports.getWorkDays = getWorkDays;
 exports.addWorkDays = addWorkDays;
+exports.updateWorkDays = updateWorkDays;
