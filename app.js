@@ -13,14 +13,7 @@ const buildingRoutes = require("./routes/building-routes");
 const studentRoutes = require("./routes/student-routes");
 const tagRoutes = require("./routes/tag-routes");
 const HttpError = require("./models/http-error");
-
-
-
-
-const buildingRoutes=require('./routes/building-routes');
 const roomRoutes=require('./routes/room-routes');
-
-const HttpError = require('./models/http-error');
 
 const app = express();
 
