@@ -12,7 +12,7 @@ const buildingRoutes = require("./routes/building-routes");
 const studentRoutes = require("./routes/student-routes");
 const tagRoutes = require("./routes/tag-routes");
 const HttpError = require("./models/http-error");
-
+const subjectRoutes = require("./routes/subject-routes");
 
 const lecturerRoutes = require('./routes/lecturer-routes');
 
@@ -37,15 +37,6 @@ mongoose
 
 const app = express();
 
-// db
-mongoose
-  .connect(process.env.DATABASE)
-  .then(() => {
-    console.log("DB connected!!!");
-  })
-  .catch((err) => {
-    console.log(err);
-  });
 
 // middlewares
 app.use(morgan("dev"));
