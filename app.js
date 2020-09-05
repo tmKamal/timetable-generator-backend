@@ -8,14 +8,17 @@ const mongoose =require('mongoose');
 
 
 const buildingRoutes=require('./routes/building-routes');
+const subjectRoutes = require('./routes/subject-routes');
+const lecturerRoutes = require('./routes/lecturer-routes');
 const HttpError = require('./models/http-error');
+const { request } = require('express');
 
 const app=express();
 
 // db
 mongoose
     .connect(
-        process.env.DATABASE
+        process.env.DATABASE, { useNewUrlParser: true }
     )
     .then(() => {
         
@@ -38,6 +41,8 @@ if(process.env.NODE_ENV==='development'){
 //routes middleware
 
 app.use('/api/building',buildingRoutes);
+app.use('/api/subject', subjectRoutes);
+app.use('/api/lecturer', lecturerRoutes);
 
 //Error Handler
 app.use((req, res, next) => {

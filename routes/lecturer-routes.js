@@ -2,12 +2,14 @@ const express=require('express');
 const router=express.Router();
 const LecturerController=require('../controllers/lecturer-controller');
 //validators
-const { AddBuildingValidator } = require('../validators/building-validator');
+const { AddLecturerValidator } = require('../validators/lecturer-validator');
 const { runValidation } = require('../validators/validator');
 
-
+router.post('/',AddLecturerValidator,runValidation,LecturerController.addLecturer);
+router.get('/:lid',LecturerController.getLecturerById);
 router.get('/',LecturerController.getAllLecturers);
-router.post('/',AddBuildingValidator,LecturerController.addLecturer);
+router.delete('/:lid',LecturerController.deleteLecturer);
+router.patch('/:lid',LecturerController.updateLecturer);
 
 router.get('/test',((req,res)=>{
     res.status(200).json({
