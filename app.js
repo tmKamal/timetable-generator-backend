@@ -5,9 +5,15 @@ const cors = require('cors');
 require('dotenv').config();
 const mongoose = require('mongoose');
 
-const buildingRoutes = require('./routes/building-routes');
+
 const workdayRoutes = require('./routes/workday-routes');
 const workTimeRoutes = require('./routes/worktime-routes');
+
+
+
+const buildingRoutes=require('./routes/building-routes');
+const roomRoutes=require('./routes/room-routes');
+
 const HttpError = require('./models/http-error');
 
 const app = express();
@@ -32,9 +38,13 @@ if (process.env.NODE_ENV === 'development') {
 }
 //routes middleware
 
-app.use('/api/building', buildingRoutes);
+
 app.use('/api/workdays', workdayRoutes);
 app.use('/api/worktime', workTimeRoutes);
+
+app.use('/api/building',buildingRoutes);
+app.use('/api/room',roomRoutes);
+
 //Error Handler
 app.use((req, res, next) => {
     const error = new HttpError('page not found!', 404);
