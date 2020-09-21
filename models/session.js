@@ -24,6 +24,10 @@ const SessionSchema = new Schema({
         type: mongoose.Types.ObjectId,
         ref: 'Subject'
     },
+    day: {
+        type: String,
+        required: true
+    },
     startTime: {
         hours: {
             type: Number,
