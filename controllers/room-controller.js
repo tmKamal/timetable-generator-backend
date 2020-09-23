@@ -5,7 +5,7 @@ const getRoomById = async (req, res, next) => {
   const rid = req.params.rid;
   let room;
   try {
-    room = await Room.findById(rid).populate('buildingId');
+    room = await Room.findById(rid).populate("buildingId");
   } catch (err) {
     const error = new HttpError("Something went wrong on DB side", 500);
     return next(error);
@@ -20,7 +20,7 @@ const getRoomById = async (req, res, next) => {
 const getAllRooms = async (req, res) => {
   let rooms;
   try {
-    rooms = await Room.find().populate('buildingId');
+    rooms = await Room.find().populate("buildingId");
   } catch (err) {
     const error = new HttpError("Something went wrong on DB", 500);
     return next(error);
@@ -33,13 +33,14 @@ const getAllRooms = async (req, res) => {
 };
 
 const addRoom = async (req, res, next) => {
-  const { roomName, roomType, roomCapacity,buildingId } = req.body;
+  const { roomName, roomType, roomCapacity, buildingId, roomTags } = req.body;
 
   const newRoom = new Room({
     roomName,
     roomType,
     roomCapacity,
-    buildingId
+    roomTags,
+    buildingId,
   });
 
   try {
@@ -58,7 +59,7 @@ const addRoom = async (req, res, next) => {
 
 const updateRoom = async (req, res, next) => {
   const roomId = req.params.rid;
-  const { roomName, roomType, roomCapacity,buildingId } = req.body;
+  const { roomName, roomType, roomCapacity, buildingId } = req.body;
   let selectedRoom;
   try {
     selectedRoom = await Room.findById(roomId);
@@ -72,7 +73,7 @@ const updateRoom = async (req, res, next) => {
   selectedRoom.roomName = roomName;
   selectedRoom.roomCapacity = roomCapacity;
   selectedRoom.roomType = roomType;
-  selectedRoom.buildingId=buildingId;
+  selectedRoom.buildingId = buildingId;
 
   try {
     await selectedRoom.save();
@@ -86,6 +87,38 @@ const updateRoom = async (req, res, next) => {
     msg: "Room has updated successfully!!",
   });
 };
+
+const setNotAvailableTime = async (req, res, next) => {
+  const roomId = req.params.rid;
+  const { day,hours,minutes,duration } = req.body;
+  let selectedRoom;
+  try {
+    selectedRoom = await Room.findById(roomId);
+  } catch (err) {
+    const error = new HttpError(
+      "something went wrong on db side, when finding the room id",
+      500
+    );
+    return next(error);
+  }
+  const notAvailableTime={
+    day,time:{hours,minutes},duration
+  }
+  selectedRoom.notAvailable.push(notAvailableTime);
+
+  try {
+    await selectedRoom.save();
+  } catch (err) {
+    const error = new HttpError("something went wrong on db side", 500);
+    return next(error);
+  }
+
+  res.status(200).json({
+    room: selectedRoom.toObject({ getters: true }),
+    msg: "Not Available time has successfully recorded in the selected room",
+  });
+};
+
 
 const deleteRoom = async (req, res, next) => {
   const roomId = req.params.rid;
@@ -114,8 +147,10 @@ const deleteRoom = async (req, res, next) => {
 
   res.status(200).json({ room: "Room has been deleted" });
 };
-exports.getAllRooms=getAllRooms;
-exports.getRoomById=getRoomById;
+exports.getAllRooms = getAllRooms;
+exports.getRoomById = getRoomById;
 exports.addRoom = addRoom;
 exports.updateRoom = updateRoom;
 exports.deleteRoom = deleteRoom;
+exports.setNotAvailableTime=setNotAvailableTime;
+
