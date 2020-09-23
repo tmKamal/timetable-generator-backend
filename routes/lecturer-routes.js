@@ -10,10 +10,5 @@ router.get('/:lid',LecturerController.getLecturerById);
 router.get('/',LecturerController.getAllLecturers);
 router.delete('/:lid',LecturerController.deleteLecturer);
 router.patch('/:lid',LecturerController.updateLecturer);
-
-router.get('/test',((req,res)=>{
-    res.status(200).json({
-        error:"we are up!!"
-    });
-}));
+router.patch('/room/:lid',LecturerController.setRoomForLecturer);
 module.exports=router;

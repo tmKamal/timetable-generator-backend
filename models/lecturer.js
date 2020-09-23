@@ -35,7 +35,8 @@ const LecturerSchema = new Schema({
                 default: 1
             }
         }
-    ]
+    ],
+    favRoom:[{type:mongoose.Types.ObjectId,ref:'Room'}]
 });
 
 module.exports = mongoose.model('Lecturer', LecturerSchema);
