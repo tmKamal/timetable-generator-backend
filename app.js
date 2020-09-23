@@ -10,33 +10,28 @@ const workTimeRoutes = require("./routes/worktime-routes");
 
 const buildingRoutes = require("./routes/building-routes");
 const studentRoutes = require("./routes/student-routes");
+const studentGroupRoutes = require("./routes/studentGroup-routes");
 const tagRoutes = require("./routes/tag-routes");
 const HttpError = require("./models/http-error");
 const subjectRoutes = require("./routes/subject-routes");
 
-const lecturerRoutes = require('./routes/lecturer-routes');
+const lecturerRoutes = require("./routes/lecturer-routes");
 
-const { request } = require('express');
-
+const { request } = require("express");
 
 const roomRoutes = require("./routes/room-routes");
 
-
 // db
 mongoose
-    .connect(
-        process.env.DATABASE, { useNewUrlParser: true }
-    )
-    .then(() => {
-        
-        console.log('DB connected!!!');
-    })
-    .catch((err) => {
-        console.log(err);
-    });
+  .connect(process.env.DATABASE, { useNewUrlParser: true })
+  .then(() => {
+    console.log("DB connected!!!");
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
 const app = express();
-
 
 // middlewares
 app.use(morgan("dev"));
@@ -49,19 +44,18 @@ if (process.env.NODE_ENV === "development") {
 }
 //routes middleware
 
-
-app.use('/api/subject', subjectRoutes);
-app.use('/api/lecturer', lecturerRoutes);
+app.use("/api/subject", subjectRoutes);
+app.use("/api/lecturer", lecturerRoutes);
 
 app.use("/api/workdays", workdayRoutes);
 app.use("/api/worktime", workTimeRoutes);
 
 app.use("/api/building", buildingRoutes);
 app.use("/api/student", studentRoutes);
+app.use("/api/studentGroup", studentGroupRoutes);
 app.use("/api/tag", tagRoutes);
 
 app.use("/api/room", roomRoutes);
-
 
 //Error Handler
 app.use((req, res, next) => {
