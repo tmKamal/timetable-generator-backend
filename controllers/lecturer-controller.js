@@ -118,7 +118,7 @@ const addLecturer = async (req, res, next) => {
         await selectedLecturer.remove();
     } catch (err) {
         const error = new HttpError(
-            'couldnt delete the record, something went wrong on db side'
+            'could not delete the record, something went wrong on db side'
         );
         return next(error);
     }

@@ -143,7 +143,36 @@ const deleteSubject = async (req, res, next) => {
     return next(error);
   }
 
-  res.status(200).json({ subject: "Subject has been deleted" });
+
+  const deleteSubject = async (req, res, next) => {
+    const subjectId = req.params.sid;
+    let selectedSubject;
+    try {
+      selectedSubject = await Subject.findById(subjectId);
+    } catch (err) {
+        const error = new HttpError(
+            'something went wrong on db side, when finding the given subject id'
+        );
+        return next(error);
+    }
+  
+    if (!selectedSubject) {
+        return next(
+            new HttpError('there is no record for the given subject id', 404)
+        );
+    }
+  
+    try {
+        await selectedSubject.remove();
+    } catch (err) {
+        const error = new HttpError(
+            'could not delete the record, something went wrong on db side'
+        );
+        return next(error);
+    }
+  
+    res.status(200).json({ subject: 'Subject has been deleted' });
+
 };
 
 const setRoomForSubjects = async (req, res, next) => {
@@ -162,6 +191,7 @@ const setRoomForSubjects = async (req, res, next) => {
   const favRoom = {
     room:roomId,
     tag:tagId,
+
   };
   selectedSubject.favRoom.push(favRoom);
   try {

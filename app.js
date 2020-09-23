@@ -14,6 +14,8 @@ const tagRoutes = require("./routes/tag-routes");
 const HttpError = require("./models/http-error");
 const subjectRoutes = require("./routes/subject-routes");
 
+const sessionRoutes = require("./routes/session-routes");
+
 const lecturerRoutes = require('./routes/lecturer-routes');
 
 const { request } = require('express');
@@ -38,7 +40,7 @@ mongoose
 const app = express();
 
 
-// middlewares
+// middleware
 app.use(morgan("dev"));
 app.use(bodyParser.json());
 
@@ -50,8 +52,8 @@ if (process.env.NODE_ENV === "development") {
 //routes middleware
 
 
-app.use('/api/subject', subjectRoutes);
-app.use('/api/lecturer', lecturerRoutes);
+app.use("/api/subject", subjectRoutes);
+app.use("/api/lecturer", lecturerRoutes);
 
 app.use("/api/workdays", workdayRoutes);
 app.use("/api/worktime", workTimeRoutes);
@@ -61,6 +63,8 @@ app.use("/api/student", studentRoutes);
 app.use("/api/tag", tagRoutes);
 
 app.use("/api/room", roomRoutes);
+
+app.use("/api/session", sessionRoutes);
 
 
 //Error Handler
@@ -75,7 +79,7 @@ app.use((error, req, res, next) => {
     return next(error);
   }
   res.status(error.code || 500);
-  res.json({ message: error.message || "An unknown error occured!!" });
+  res.json({ message: error.message || "An unknown error occurred !!" });
 });
 
 //port

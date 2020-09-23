@@ -20,27 +20,39 @@ const SessionSchema = new Schema({
         type: mongoose.Types.ObjectId,
         ref: 'Student'
     },
+    subGroup: {
+        type: mongoose.Types.ObjectId,
+        ref: 'Student'
+    },
     subject: {
+        type: mongoose.Types.ObjectId,
+        ref: 'Subject'
+    },
+    subjectCode: {
         type: mongoose.Types.ObjectId,
         ref: 'Subject'
     },
     day: {
         type: String,
-        required: true
+        
     },
     startTime: {
         hours: {
             type: Number,
-            required: true
+            
         },
         minutes: {
             type: Number,
-            required: true
+           
         }
     },
     duration: {
         type: Number,
-        default: 1
+        required: true
+    },
+    studentCount: {
+        type: Number,
+        required: true
     },
     room: {
         type: mongoose.Types.ObjectId,

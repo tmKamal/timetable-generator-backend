@@ -41,4 +41,3 @@ const LecturerSchema = new Schema({
 
 module.exports = mongoose.model('Lecturer', LecturerSchema);
 
-//lecturerName,empId,faculty,department,center,building,level
