@@ -1,102 +1,148 @@
 const Subject = require("../models/subject");
 const HttpError = require("../models/http-error");
 
-
 const getSubjectById = async (req, res, next) => {
   const sid = req.params.sid;
   let subject;
   try {
-      subject = await Subject.findById(sid);
+    subject = await Subject.findById(sid);
   } catch (err) {
-      const error = new HttpError('Something went wrong on DB side getbyid', 500);
-      return next(error);
+    const error = new HttpError("Something went wrong on DB side getbyid", 500);
+    return next(error);
   }
 
   if (!subject) {
-      return next(new HttpError('No Subject found for the given id!!', 404));
+    return next(new HttpError("No Subject found for the given id!!", 404));
   }
   res.json({ subject: subject.toObject({ getters: true }) });
 };
 
-
-const getAllSubjects =  async(req, res) => {
+const getAllSubjects = async (req, res) => {
   let subjects;
-  try{
-      subjects =await Subject.find();
-  }catch(err){
-    const error=new HttpError('Something went wrong on DB getall',500);
+  try {
+    subjects = await Subject.find();
+  } catch (err) {
+    const error = new HttpError("Something went wrong on DB getall", 500);
     return next(error);
   }
-  if(!subjects){
-    const error=new HttpError('No Subject found',404);  
+  if (!subjects) {
+    const error = new HttpError("No Subject found", 404);
     return next(error);
   }
-  res.json({subjects:subjects.map((b)=>(b.toObject({getters:true})))});
-  
+  res.json({ subjects: subjects.map((b) => b.toObject({ getters: true })) });
 };
 
-
 const addSubject = async (req, res, next) => {
- 
-    const { subjectName,subjectCode,offeredYear,offeredSemester,lectureHours,tutorialHours,labHours,evaluationHours } = req.body;
-    
-    const newSubject = new Subject({
-        subjectName,
-        subjectCode,
-        offeredYear,
-        offeredSemester,
-        lectureHours,
-        tutorialHours,
-        labHours,
-        evaluationHours,
-    });
-  
-    try {
-      await newSubject.save();
-    } catch (err) {
-        console.log(newSubject);
-      const error = new HttpError("Subject has not created successfully, error on db", 500);
-      return next(error);
-    }
-  
-    res.status(201).json({msg:'Subject has been added successfully!'});
-  };
+  const {
+    subjectName,
+    subjectCode,
+    offeredYear,
+    offeredSemester,
+    lectureHours,
+    tutorialHours,
+    labHours,
+    evaluationHours,
+  } = req.body;
 
-  const updateSubject = async (req, res, next) => {
-  
-    const subjectId = req.params.sid;
-    const { subjectName,subjectCode,offeredYear,offeredSemester,lectureHours,tutorialHours,labHours,evaluationHours } = req.body;
-    let selectedSubject;
-    try {
-      selectedSubject = await Subject.findById(subjectId);
-    } catch (err) {
-        const error = new HttpError(
-            'something went wrong on db side, when finding the Subject id',
-            500
-        );
-        return next(error);
-    }
-    selectedSubject.subjectName = subjectName;
-    selectedSubject.subjectCode = subjectCode;
-    selectedSubject.offeredYear = offeredYear;
-    selectedSubject.offeredSemester = offeredSemester;
-    selectedSubject.lectureHours = lectureHours;
-    selectedSubject.tutorialHours = tutorialHours;
-    selectedSubject.labHours = labHours;
-    selectedSubject.evaluationHours = evaluationHours;
+  const newSubject = new Subject({
+    subjectName,
+    subjectCode,
+    offeredYear,
+    offeredSemester,
+    lectureHours,
+    tutorialHours,
+    labHours,
+    evaluationHours,
+  });
 
-  
-    try {
-        await selectedSubject.save();
-    } catch (err) {
-        const error = new HttpError('something went wrong on db side updatesub', 500);
-        return next(error);
-    }
-  
-    res.status(200).json({
-        subject: selectedSubject.toObject({ getters: true }),msg:'Subject has updated successfully!!'
-    });
-  };
+  try {
+    await newSubject.save();
+  } catch (err) {
+    console.log(newSubject);
+    const error = new HttpError(
+      "Subject has not created successfully, error on db",
+      500
+    );
+    return next(error);
+  }
+
+  res.status(201).json({ msg: "Subject has been added successfully!" });
+};
+
+const updateSubject = async (req, res, next) => {
+  const subjectId = req.params.sid;
+  const {
+    subjectName,
+    subjectCode,
+    offeredYear,
+    offeredSemester,
+    lectureHours,
+    tutorialHours,
+    labHours,
+    evaluationHours,
+  } = req.body;
+  let selectedSubject;
+  try {
+    selectedSubject = await Subject.findById(subjectId);
+  } catch (err) {
+    const error = new HttpError(
+      "something went wrong on db side, when finding the Subject id",
+      500
+    );
+    return next(error);
+  }
+  selectedSubject.subjectName = subjectName;
+  selectedSubject.subjectCode = subjectCode;
+  selectedSubject.offeredYear = offeredYear;
+  selectedSubject.offeredSemester = offeredSemester;
+  selectedSubject.lectureHours = lectureHours;
+  selectedSubject.tutorialHours = tutorialHours;
+  selectedSubject.labHours = labHours;
+  selectedSubject.evaluationHours = evaluationHours;
+
+  try {
+    await selectedSubject.save();
+  } catch (err) {
+    const error = new HttpError(
+      "something went wrong on db side updatesub",
+      500
+    );
+    return next(error);
+  }
+
+  res.status(200).json({
+    subject: selectedSubject.toObject({ getters: true }),
+    msg: "Subject has updated successfully!!",
+  });
+};
+
+const deleteSubject = async (req, res, next) => {
+  const subjectId = req.params.sid;
+  let selectedSubject;
+  try {
+    selectedSubject = await Subject.findById(subjectId);
+  } catch (err) {
+    const error = new HttpError(
+      "something went wrong on db side, when finding the given subject id"
+    );
+    return next(error);
+  }
+
+  if (!selectedSubject) {
+    return next(
+      new HttpError("there is no record for the given subject id", 404)
+    );
+  }
+
+  try {
+    await selectedSubject.remove();
+  } catch (err) {
+    const error = new HttpError(
+      "couldnt delete the record, something went wrong on db side"
+    );
+    return next(error);
+  }
+
 
   const deleteSubject = async (req, res, next) => {
     const subjectId = req.params.sid;
@@ -126,11 +172,43 @@ const addSubject = async (req, res, next) => {
     }
   
     res.status(200).json({ subject: 'Subject has been deleted' });
-  };
-  
 
-  exports.addSubject=addSubject;
-  exports.getAllSubjects=getAllSubjects;
-  exports.getSubjectById=getSubjectById;
-  exports.updateSubject=updateSubject;
-  exports.deleteSubject=deleteSubject;
+};
+
+const setRoomForSubjects = async (req, res, next) => {
+  const subjectId = req.params.sid;
+  const { roomId, tagId } = req.body;
+  let selectedSubject;
+  try {
+    selectedSubject = await Subject.findById(subjectId);
+  } catch (e) {
+    const error = new HttpError(
+      "something went wrong on db side, when finding the subject id",
+      500
+    );
+    return next(error);
+  }
+  const favRoom = {
+    room:roomId,
+    tag:tagId,
+
+  };
+  selectedSubject.favRoom.push(favRoom);
+  try {
+    await selectedSubject.save();
+  } catch (e) {
+    const error = new HttpError("something went wrong on db side : " + e, 501);
+    return next(error);
+  }
+  res.status(200).json({
+    subject: selectedSubject.toObject({ getters: true }),
+    msg: "Room has been marked as preferred for the selected Subject and tag.",
+  });
+};
+
+exports.addSubject = addSubject;
+exports.getAllSubjects = getAllSubjects;
+exports.getSubjectById = getSubjectById;
+exports.updateSubject = updateSubject;
+exports.deleteSubject = deleteSubject;
+exports.setRoomForSubjects = setRoomForSubjects;

@@ -126,8 +126,36 @@ const addLecturer = async (req, res, next) => {
     res.status(200).json({ lecturer: 'Building has been deleted' });
   };
 
+  const setRoomForLecturer = async (req, res, next) => {
+    const lecturerId = req.params.lid;
+    const { roomId } = req.body;
+    let selectedLecturer;
+    try {
+      selectedLecturer = await Lecturer.findById(lecturerId);
+    } catch (e) {
+      const error = new HttpError(
+        "something went wrong on db side, when finding the lecturer id",
+        500
+      );
+      return next(error);
+    }
+    
+    selectedLecturer.favRoom.push(roomId);
+    try {
+      await selectedLecturer.save();
+    } catch (e) {
+      const error = new HttpError("something went wrong on db side", 500);
+      return next(error);
+    }
+    res.status(200).json({
+      lecturer: selectedLecturer.toObject({ getters: true }),
+      msg: "Room has been marked as preferred for the selected lecturer.",
+    });
+  };
+
   exports.addLecturer=addLecturer;
   exports.getAllLecturers = getAllLecturers;
   exports.updateLecturer = updateLecturer;
   exports.deleteLecturer = deleteLecturer;
   exports.getLecturerById = getLecturerById;
+  exports.setRoomForLecturer=setRoomForLecturer;

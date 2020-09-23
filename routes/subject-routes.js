@@ -10,10 +10,5 @@ router.get('/',SubjectController.getAllSubjects);
 router.get('/:sid',SubjectController.getSubjectById);
 router.delete('/:sid',SubjectController.deleteSubject);
 router.patch('/:sid',SubjectController.updateSubject);
-
-router.get('/test',((req,res)=>{
-    res.status(200).json({
-        error:"we are up!!"
-    });
-}));
+router.patch('/room/:sid',SubjectController.setRoomForSubjects);
 module.exports=router;

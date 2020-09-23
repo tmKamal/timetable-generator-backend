@@ -11,9 +11,6 @@ router.get('/',RoomController.getAllRooms);
 router.post('/',AddRoomValidator,runValidation,RoomController.addRoom);
 router.delete('/:rid',RoomController.deleteRoom);
 router.patch('/:rid',RoomController.updateRoom);
-router.get('/test',((req,res)=>{
-    res.status(200).json({
-        error:"we are up!!"
-    });
-}));
+router.patch('/not-available/:rid',RoomController.setNotAvailableTime);
+
 module.exports=router;
