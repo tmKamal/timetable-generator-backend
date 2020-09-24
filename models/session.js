@@ -53,10 +53,7 @@ const SessionSchema = new Schema({
         type: Number,
         required: true
     },
-    room: {
-        type: mongoose.Types.ObjectId,
-        ref: 'Room'
-    }
+    favRoom:[{type:mongoose.Types.ObjectId,ref:'Room'}]
 });
 
 module.exports = mongoose.model('Session', SessionSchema);
