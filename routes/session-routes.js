@@ -4,7 +4,7 @@ const SessionController = require('../controllers/session-controller');
 const { AddSessionValidator} = require("../validators/session-validator");
 const { runValidation } = require('../validators/validator');
 
-router.post('/',AddSessionValidator,runValidation,SessionController.addSession);
+router.post('/',SessionController.addSession);
 router.get('/',SessionController.getAllSessions);
 
 router.get('/test',((req,res)=>{

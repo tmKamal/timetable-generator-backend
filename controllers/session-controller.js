@@ -19,7 +19,8 @@ const getAllSessions =  async(req, res) => {
 
   const addSession = async (req, res, next) => {
  
-    const { lecturers,tag,studentGroup,subject,studentCount,duration } = req.body;
+    const { lecturers,tag,studentGroup,subject,studentCount,duration,subjectCode,hours,minutes } = req.body;
+    console.log(lecturers);
     
     const newSession = new Session({
         lecturers,
@@ -27,8 +28,11 @@ const getAllSessions =  async(req, res) => {
         studentGroup,
         //subGroup,
         subject,
-        //subjectCode,
+        subjectCode,
         studentCount,
+        startTime:{
+          hours,minutes
+        },
         duration
     });
   

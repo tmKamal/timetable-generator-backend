@@ -29,8 +29,7 @@ const SessionSchema = new Schema({
         ref: 'Subject'
     },
     subjectCode: {
-        type: mongoose.Types.ObjectId,
-        ref: 'Subject'
+        type:String
     },
     day: {
         type: String,
