@@ -1,17 +1,17 @@
-const express=require('express');
-const router=express.Router();
-const SessionController = require('../controllers/session-controller');
-const { AddSessionValidator} = require("../validators/session-validator");
-const { runValidation } = require('../validators/validator');
+const express = require("express");
+const router = express.Router();
+const SessionController = require("../controllers/session-controller");
+const { AddSessionValidator } = require("../validators/session-validator");
+const { runValidation } = require("../validators/validator");
 
-router.post('/',SessionController.addSession);
-router.get('/',SessionController.getAllSessions);
-router.patch('/room/:sid',SessionController.setRoomForSession);
+router.post("/", SessionController.addSession);
+router.get("/", SessionController.getAllSessions);
+router.patch("/room/:sid", SessionController.setRoomForSession);
+router.patch("/not-available/:sid", SessionController.setNotAvailableTime);
 
-router.get('/test',((req,res)=>{
-    res.status(200).json({
-        error:"we are up!!"
-    });
-}));
-module.exports=router;
-
+router.get("/test", (req, res) => {
+  res.status(200).json({
+    error: "we are up!!",
+  });
+});
+module.exports = router;

@@ -1,59 +1,79 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const SessionSchema = new Schema({
-    lecturers: [
-        {
-            type: mongoose.Types.ObjectId,
-            ref: 'Lecturer'
-        }
-    ],
-    selectedLecturer: {
-        type: mongoose.Types.ObjectId,
-        ref: 'Lecturer'
+  lecturers: [
+    {
+      type: mongoose.Types.ObjectId,
+      ref: "Lecturer",
     },
-    tag: {
-        type: mongoose.Types.ObjectId,
-        ref: 'Tag'
+  ],
+  selectedLecturer: {
+    type: mongoose.Types.ObjectId,
+    ref: "Lecturer",
+  },
+  tag: {
+    type: mongoose.Types.ObjectId,
+    ref: "Tag",
+  },
+  studentGroup: {
+    type: mongoose.Types.ObjectId,
+    ref: "StudentGroup",
+  },
+  subGroup: {
+    type: mongoose.Types.ObjectId,
+    ref: "Student",
+  },
+  subject: {
+    type: mongoose.Types.ObjectId,
+    ref: "Subject",
+  },
+  subjectCode: {
+    type: String,
+  },
+  day: {
+    type: String,
+  },
+  startTime: {
+    hours: {
+      type: Number,
     },
-    studentGroup: {
-        type: mongoose.Types.ObjectId,
-        ref: 'StudentGroup'
+
+    minutes: {
+      type: Number,
     },
-    subGroup: {
-        type: mongoose.Types.ObjectId,
-        ref: 'Student'
-    },
-    subject: {
-        type: mongoose.Types.ObjectId,
-        ref: 'Subject'
-    },
-    subjectCode: {
-        type:String
-    },
-    day: {
+  },
+  duration: {
+    type: Number,
+    required: true,
+  },
+  studentCount: {
+    type: Number,
+    required: true,
+  },
+  notAvailable: [
+    {
+      day: {
         type: String,
-        
-    },
-    startTime: {
+        required: true,
+      },
+      time: {
         hours: {
-            type: Number,
-            
+          type: Number,
+          required: true,
         },
         minutes: {
-            type: Number,
-           
-        }
-    },
-    duration: {
+          type: Number,
+          required: true,
+        },
+      },
+      duration: {
         type: Number,
-        required: true
+        default: 1,
+      },
     },
-    studentCount: {
-        type: Number,
-        required: true
-    },
-    favRoom:[{type:mongoose.Types.ObjectId,ref:'Room'}]
+  ],
+  favRoom: [{ type: mongoose.Types.ObjectId, ref: "Room" }],
 });
 
-module.exports = mongoose.model('Session', SessionSchema);
+module.exports = mongoose.model("Session", SessionSchema);
