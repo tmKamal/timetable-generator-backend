@@ -27,7 +27,8 @@ const StudentSchema = new Schema({
                 default: 1
             }
         }
-    ]
+    ],
+    favRoom: [{ type: mongoose.Types.ObjectId, ref: "Room" }],
 });
 
 module.exports = mongoose.model('Student', StudentSchema);

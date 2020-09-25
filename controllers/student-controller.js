@@ -151,9 +151,37 @@ const deleteStudent = async (req, res, next) => {
   res.status(200).json({ student: "Student has been deleted" });
 };
 
+const setRoomForSubGroup = async (req, res, next) => {
+  const groupId = req.params.gid;
+  const { roomId } = req.body;
+  let selectedGroup;
+  try {
+    selectedGroup = await Student.findById(groupId);
+  } catch (e) {
+    const error = new HttpError(
+      "something went wrong on db side, when finding the group id",
+      500
+    );
+    return next(error);
+  }
+
+  selectedGroup.favRoom.push(roomId);
+  try {
+    await selectedGroup.save();
+  } catch (e) {
+    const error = new HttpError("something went wrong on db side", 500);
+    return next(error);
+  }
+  res.status(200).json({
+    subGroup: selectedGroup.toObject({ getters: true }),
+    msg: "Room has been marked as preferred for the selected Sub Group.",
+  });
+};
+
 exports.getAllStudents = getAllStudents;
 exports.addStudent = addStudent;
 exports.updateStudent = updateStudent;
 exports.deleteStudent = deleteStudent;
 exports.getStudentById = getStudentById;
 exports.setNotAvailableTime = setNotAvailableTime;
+exports.setRoomForSubGroup = setRoomForSubGroup;
