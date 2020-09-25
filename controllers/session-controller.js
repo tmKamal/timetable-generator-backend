@@ -5,7 +5,7 @@ const HttpError = require("../models/http-error");
 const getAllSessions =  async(req, res) => {
     let sessions;
     try{
-        sessions =await Session.find().populate('tag').populate('studentGroup');
+        sessions =await Session.find().populate('tag').populate('studentGroup').populate('subGroup');
     }catch(err){
       const error=new HttpError('Something went wrong on DB',500);
       return next(error);
@@ -20,14 +20,14 @@ const getAllSessions =  async(req, res) => {
 
   const addSession = async (req, res, next) => {
  
-    const { lecturers,tag,studentGroup,subject,studentCount,duration,subjectCode,hours,minutes } = req.body;
+    const { lecturers,tag,studentGroup,subGroup,subject,studentCount,duration,subjectCode,hours,minutes } = req.body;
     console.log(lecturers);
-    
-    const newSession = new Session({
+    let newSession;
+    if(studentGroup !=''){
+      newSession = new Session({
         lecturers,
         tag,
         studentGroup,
-        //subGroup,
         subject,
         subjectCode,
         studentCount,
@@ -36,6 +36,22 @@ const getAllSessions =  async(req, res) => {
         },
         duration
     });
+    }else{
+      newSession = new Session({
+        lecturers,
+        tag,
+        subGroup,
+        subject,
+        subjectCode,
+        studentCount,
+        startTime:{
+          hours,minutes
+        },
+        duration
+    });
+    }
+    
+    
   
     try {
       await newSession.save();
