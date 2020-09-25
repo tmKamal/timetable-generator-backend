@@ -18,7 +18,7 @@ const SessionSchema = new Schema({
   },
   studentGroup: {
     type: mongoose.Types.ObjectId,
-    ref: "Student",
+    ref: "StudentGroup",
   },
   subGroup: {
     type: mongoose.Types.ObjectId,
@@ -38,6 +38,7 @@ const SessionSchema = new Schema({
     hours: {
       type: Number,
     },
+
     minutes: {
       type: Number,
     },
