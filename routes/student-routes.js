@@ -15,9 +15,5 @@ router.post(
 );
 router.delete("/:sid", StudentController.deleteStudent);
 router.patch("/:sid", StudentController.updateStudent);
-router.get("/test", (req, res) => {
-  res.status(200).json({
-    error: "we are up!!",
-  });
-});
+router.patch("/not-available/:sid", StudentController.setNotAvailableTime);
 module.exports = router;

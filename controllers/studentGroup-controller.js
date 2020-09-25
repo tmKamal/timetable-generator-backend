@@ -87,6 +87,40 @@ const updateStudentGroup = async (req, res, next) => {
   });
 };
 
+const setNotAvailableTime = async (req, res, next) => {
+  const studentId = req.params.sid;
+  const { day, hours, minutes, duration } = req.body;
+  let selectedStudent;
+  try {
+    selectedStudent = await StudentGroup.findById(studentId);
+  } catch (err) {
+    const error = new HttpError(
+      "Something went wrong on DB side, when finding the Student ID",
+      500
+    );
+    return next(error);
+  }
+  const notAvailableTime = {
+    day,
+    time: { hours, minutes },
+    duration,
+  };
+  selectedStudent.notAvailable.push(notAvailableTime);
+
+  try {
+    await selectedStudent.save();
+  } catch (err) {
+    const error = new HttpError("Something went wrong on DB side", 500);
+    return next(error);
+  }
+
+  res.status(200).json({
+    studentGroup: selectedStudent.toObject({ getters: true }),
+    msg:
+      "Not Available time has been successfully recorded in to the Selected Student",
+  });
+};
+
 const deleteStudentGroup = async (req, res, next) => {
   const studentId = req.params.sid;
   let selectedStudent;
@@ -114,7 +148,7 @@ const deleteStudentGroup = async (req, res, next) => {
     return next(error);
   }
 
-  res.status(200).json({ student: "Student has been deleted" });
+  res.status(200).json({ student: "Student Group has been deleted" });
 };
 
 exports.getAllStudentGroups = getAllStudentGroups;
@@ -122,3 +156,4 @@ exports.addStudentGroup = addStudentGroup;
 exports.updateStudentGroup = updateStudentGroup;
 exports.deleteStudentGroup = deleteStudentGroup;
 exports.getStudentGroupById = getStudentGroupById;
+exports.setNotAvailableTime = setNotAvailableTime;
