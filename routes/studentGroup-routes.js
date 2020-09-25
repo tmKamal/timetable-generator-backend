@@ -11,4 +11,5 @@ router.post("/", StudentGroupController.addStudentGroup);
 router.delete("/:sid", StudentGroupController.deleteStudentGroup);
 router.patch("/:sid", StudentGroupController.updateStudentGroup);
 router.patch("/not-available/:sid", StudentGroupController.setNotAvailableTime);
+router.patch("/room/:gid",StudentGroupController.setRoomForMainGroup);
 module.exports = router;

@@ -27,6 +27,7 @@ const StudentGroupSchema = new Schema({
       },
     },
   ],
+  favRoom: [{ type: mongoose.Types.ObjectId, ref: "Room" }],
 });
 
 module.exports = mongoose.model("StudentGroup", StudentGroupSchema);
