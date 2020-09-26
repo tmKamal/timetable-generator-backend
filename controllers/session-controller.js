@@ -1,5 +1,6 @@
 const Session = require("../models/session");
 const HttpError = require("../models/http-error");
+const mongoose = require('mongoose'); 
 
 const getAllSessions = async (req, res) => {
   let sessions;
@@ -139,7 +140,56 @@ const setRoomForSession = async (req, res, next) => {
   });
 };
 
+const addConsecutiveSessions=async (req, res, next) => {
+  const {
+    firstSessionId,
+      secondSessionId
+  } = req.body;
+ 
+  const consecutiveSession=new Session({
+    type:"consecutive",
+    consecutive:{
+
+      sessionOne:firstSessionId,
+      sessionTwo:secondSessionId
+    }
+  });
+  let firstSession;
+  let secondSession;
+  try{
+    firstSession=await Session.findById(firstSessionId);
+    secondSession=await Session.findById(secondSessionId);
+  }catch(e){
+    const error = new HttpError(
+      "Something went wrong, when finding the sessions id in DB"+e,
+      500
+    );
+  }
+  try {
+    const sess = await mongoose.startSession();
+    sess.startTransaction();
+    await consecutiveSession.save({session:sess});
+    firstSession.alive=false;
+    await firstSession.save({session:sess});
+    secondSession.alive=false;
+    await secondSession.save({session:sess});
+    sess.commitTransaction();
+
+  } catch (err) {
+    console.log(consecutiveSession);
+    const error = new HttpError(
+      "Consecutive session has not created successfully, error on db"+err,
+      500
+    );
+    return next(error);
+  }
+
+  res.status(201).json({ msg: "Consecutive session has been added successfully!" });
+
+}
+
 exports.addSession = addSession;
 exports.getAllSessions = getAllSessions;
 exports.setRoomForSession = setRoomForSession;
 exports.setNotAvailableTime = setNotAvailableTime;
+exports.addConsecutiveSessions=addConsecutiveSessions;

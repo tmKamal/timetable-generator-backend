@@ -45,11 +45,11 @@ const SessionSchema = new Schema({
   },
   duration: {
     type: Number,
-    required: true,
+   
   },
   studentCount: {
     type: Number,
-    required: true,
+    
   },
   notAvailable: [
     {
@@ -74,6 +74,21 @@ const SessionSchema = new Schema({
     },
   ],
   favRoom: [{ type: mongoose.Types.ObjectId, ref: "Room" }],
+  alive: { type: Boolean, default: true },
+  type: { type: String, default: "normal" },
+  consecutive: {
+    sessionOne: {
+      type: mongoose.Types.ObjectId,
+      ref: "Session",
+    },
+    sessionTwo: {
+      type: mongoose.Types.ObjectId,
+      ref: "Session",
+    },
+  },
+  parallel:{
+    sessions:[{type:mongoose.Types.ObjectId,ref:"Session"}]
+  }
 });
 
 module.exports = mongoose.model("Session", SessionSchema);

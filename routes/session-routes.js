@@ -8,6 +8,8 @@ router.post("/", SessionController.addSession);
 router.get("/", SessionController.getAllSessions);
 router.patch("/room/:sid", SessionController.setRoomForSession);
 router.patch("/not-available/:sid", SessionController.setNotAvailableTime);
+router.post("/conSessions",SessionController.addConsecutiveSessions);
+
 
 router.get("/test", (req, res) => {
   res.status(200).json({
