@@ -36,11 +36,12 @@ const getAllStudentGroups = async (req, res) => {
 
 const addStudentGroup = async (req, res, next) => {
   const { academicYearSem, programme, groupNumber } = req.body;
-
+  const groupId=academicYearSem+'.'+programme+'.'+groupNumber;
   const newStudent = new StudentGroup({
     academicYearSem,
     programme,
     groupNumber,
+    groupId
   });
 
   try {
