@@ -143,14 +143,16 @@ const setRoomForSession = async (req, res, next) => {
 };
 
 const addConsecutiveSessions = async (req, res, next) => {
-  const { firstSessionId, secondSessionId } = req.body;
+  const { firstSessionId, secondSessionId,duration } = req.body;
 
   const consecutiveSession = new Session({
     type: "consecutive",
     consecutive: {
       sessionOne: firstSessionId,
       sessionTwo: secondSessionId,
+      
     },
+    duration,
   });
   let firstSession;
   let secondSession;
