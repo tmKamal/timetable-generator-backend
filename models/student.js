@@ -6,6 +6,7 @@ const StudentSchema = new Schema({
     programme: { type: String, required: true },
     groupNumber: { type: Number, required: true },
     subGroupNumber: { type: Number, required: true },
+    groupId:{type:String,required:true},
     notAvailable: [
         {
             day: {

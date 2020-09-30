@@ -34,13 +34,15 @@ const getAllStudents = async (req, res) => {
 
 const addStudent = async (req, res, next) => {
   const { academicYearSem, programme, groupNumber, subGroupNumber } = req.body;
-
+  const groupId=academicYearSem+'.'+programme+'.'+groupNumber+'.'+subGroupNumber;
   const newStudent = new Student({
     academicYearSem,
     programme,
     groupNumber,
     subGroupNumber,
+    groupId
   });
+  
 
   try {
     await newStudent.save();
