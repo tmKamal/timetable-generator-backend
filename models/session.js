@@ -31,6 +31,9 @@ const SessionSchema = new Schema({
   subjectCode: {
     type: String,
   },
+  groupId: {
+    type: String,
+  },
   day: {
     type: String,
   },

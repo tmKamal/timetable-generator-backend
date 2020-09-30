@@ -1,6 +1,7 @@
 const Session = require("../models/session");
 const HttpError = require("../models/http-error");
 const mongoose = require("mongoose");
+const studentGroup = require("../models/studentGroup");
 
 const getAllSessions = async (req, res) => {
   let sessions;
@@ -34,6 +35,7 @@ const addSession = async (req, res, next) => {
     subjectCode,
     hours,
     minutes,
+    groupId,
   } = req.body;
   console.log(lecturers);
   let newSession;
@@ -45,6 +47,7 @@ const addSession = async (req, res, next) => {
       subject,
       subjectCode,
       studentCount,
+      groupId,
       startTime: {
         hours,
         minutes,
@@ -59,6 +62,7 @@ const addSession = async (req, res, next) => {
       subject,
       subjectCode,
       studentCount,
+      groupId,
       startTime: {
         hours,
         minutes,
@@ -248,9 +252,43 @@ const addParallelSessions = async (req, res, next) => {
     .json({ msg: "Parallel session has been added successfully!" });
 };
 
+const getSessionsByGroupId = async (req, res, next) => {
+  const groupId = req.params.gid;
+  let selectedGroup;
+  try{
+    selectedGroup=await studentGroup.findById(groupId);
+  }catch(err){
+    const error = new HttpError("Something went wrong on DB", 500);
+    return next(error);
+  }
+  if (!selectedGroup) {
+    const error = new HttpError("No Group found for given group id", 404);
+    return next(error);
+  }
+  const gId=selectedGroup.groupId;
+  //const stringGId='/'+gId+'/';
+
+  
+  let sessions;
+  try {
+    const tmpSessions = await Session.find({groupId:{ $regex: '.*' + gId + '.*' }});
+    sessions=tmpSessions.filter((s) => s.alive == true);
+      
+  } catch (err) {
+    const error = new HttpError("Something went wrong on DB", 500);
+    return next(error);
+  }
+  if (!sessions) {
+    const error = new HttpError("No session found", 404);
+    return next(error);
+  }
+  res.json({ sessions: sessions.map((b) => b.toObject({ getters: true })) });
+};
+
 exports.addSession = addSession;
 exports.getAllSessions = getAllSessions;
 exports.setRoomForSession = setRoomForSession;
 exports.setNotAvailableTime = setNotAvailableTime;
 exports.addConsecutiveSessions = addConsecutiveSessions;
 exports.addParallelSessions = addParallelSessions;
+exports.getSessionsByGroupId=getSessionsByGroupId;

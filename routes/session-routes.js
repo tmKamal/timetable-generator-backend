@@ -10,6 +10,7 @@ router.patch("/room/:sid", SessionController.setRoomForSession);
 router.patch("/not-available/:sid", SessionController.setNotAvailableTime);
 router.post("/conSessions",SessionController.addConsecutiveSessions);
 router.post("/paralSessions",SessionController.addParallelSessions);
+router.get("/getSessionByGroupId/:gid",SessionController.getSessionsByGroupId);
 
 
 router.get("/test", (req, res) => {
