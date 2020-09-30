@@ -8,6 +8,7 @@ const getAllSessions = async (req, res) => {
     sessions = await Session.find()
       .populate("tag")
       .populate("studentGroup")
+      .populate("lecturers")
       .populate("subGroup");
   } catch (err) {
     const error = new HttpError("Something went wrong on DB", 500);
