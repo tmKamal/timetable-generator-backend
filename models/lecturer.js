@@ -36,8 +36,38 @@ const LecturerSchema = new Schema({
             }
         }
     ],
-    favRoom:[{type:mongoose.Types.ObjectId,ref:'Room'}]
+    favRoom: [{ type: mongoose.Types.ObjectId, ref: 'Room' }],
+    nextAvailable: {
+        day: {
+            type: Number,
+            default: 0
+        },
+        stRow: {
+            type: Number,
+            default: 0
+        }
+    },
+    timetable: [
+        {
+            column: {
+                type: Number
+            },
+            stRow: {
+                type: Number
+            },
+            endRow: {
+                type: Number
+            },
+            sessions: [
+                {
+                    session: {
+                        type: mongoose.Types.ObjectId,
+                        ref: 'Session'
+                    }
+                }
+            ]
+        }
+    ]
 });
 
 module.exports = mongoose.model('Lecturer', LecturerSchema);
-
