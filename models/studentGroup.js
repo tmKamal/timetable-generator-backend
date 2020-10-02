@@ -1,34 +1,65 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const StudentGroupSchema = new Schema({
-  academicYearSem: { type: String, required: true },
-  programme: { type: String, required: true },
-  groupNumber: { type: Number, required: true },
-  groupId:{type:String,required:true},
-  notAvailable: [
-    {
-      day: {
-        type: String,
-        required: true,
-      },
-      time: {
-        hours: {
-          type: Number,
-          required: true,
+    academicYearSem: { type: String, required: true },
+    programme: { type: String, required: true },
+    groupNumber: { type: Number, required: true },
+    groupId: { type: String, required: true },
+    notAvailable: [
+        {
+            day: {
+                type: String,
+                required: true
+            },
+            time: {
+                hours: {
+                    type: Number,
+                    required: true
+                },
+                minutes: {
+                    type: Number,
+                    required: true
+                }
+            },
+            duration: {
+                type: Number,
+                default: 1
+            }
+        }
+    ],
+    nextAvailable: {
+        day: {
+            type: Number,
+            default: 0
         },
-        minutes: {
-          type: Number,
-          required: true,
-        },
-      },
-      duration: {
-        type: Number,
-        default: 1,
-      },
+        stRow: {
+            type: Number,
+            default: 0
+        }
     },
-  ],
-  favRoom: [{ type: mongoose.Types.ObjectId, ref: "Room" }],
+    timetable: [
+        {
+            column: {
+                type: Number
+            },
+            stRow: {
+                type: Number
+            },
+            endRow: {
+                type: Number
+            },
+            sessions: [
+                {
+                    session: {
+                        type: mongoose.Types.ObjectId,
+                        ref: 'Session'
+                    }
+                }
+            ]
+        }
+    ],
+    favRoom: [{ type: mongoose.Types.ObjectId, ref: 'Room' }]
 });
 
-module.exports = mongoose.model("StudentGroup", StudentGroupSchema);
+module.exports = mongoose.model('StudentGroup', StudentGroupSchema);
