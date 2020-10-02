@@ -5,7 +5,7 @@ const getLecturerById = async (req, res, next) => {
   const lid = req.params.lid;
   let lecturer;
   try {
-    lecturer = await Building.findById(bid);
+    lecturer = await Lecturer.findById(lid).populate("buildingId");
   } catch (err) {
     const error = new HttpError("Something went wrong on DB side", 500);
     return next(error);
@@ -20,7 +20,7 @@ const getLecturerById = async (req, res, next) => {
 const getAllLecturers = async (req, res) => {
   let lecturers;
   try {
-    lecturers = await Lecturer.find().populate("building");
+    lecturers = await Lecturer.find().populate("buildingId");
   } catch (err) {
     const error = new HttpError("Something went wrong on DB", 500);
     return next(error);
