@@ -2,6 +2,7 @@ const Lecturer = require('../models/lecturer');
 const HttpError = require('../models/http-error');
 
 const getLecturerById = async (req, res, next) => {
+<<<<<<< HEAD
     const lid = req.params.lid;
     let lecturer;
     try {
@@ -50,6 +51,36 @@ const getAllLecturers = async (req, res) => {
     res.json({
         lecturers: lecturers.map((b) => b.toObject({ getters: true }))
     });
+=======
+  const lid = req.params.lid;
+  let lecturer;
+  try {
+    lecturer = await Lecturer.findById(lid).populate("buildingId");
+  } catch (err) {
+    const error = new HttpError("Something went wrong on DB side", 500);
+    return next(error);
+  }
+
+  if (!lecturer) {
+    return next(new HttpError("No lecturer found for the given id!!", 404));
+  }
+  res.json({ lecturer: lecturer.toObject({ getters: true }) });
+};
+
+const getAllLecturers = async (req, res) => {
+  let lecturers;
+  try {
+    lecturers = await Lecturer.find().populate("buildingId");
+  } catch (err) {
+    const error = new HttpError("Something went wrong on DB", 500);
+    return next(error);
+  }
+  if (!lecturers) {
+    const error = new HttpError("No Lecturer found", 404);
+    return next(error);
+  }
+  res.json({ lecturers: lecturers.map((b) => b.toObject({ getters: true })) });
+>>>>>>> 34b94d64d77b0a0ac1b1796d4ce3a147809565ee
 };
 
 const addLecturer = async (req, res, next) => {
