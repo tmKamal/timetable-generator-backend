@@ -13,4 +13,5 @@ router.patch('/:sid', StudentGroupController.updateStudentGroup);
 router.patch('/not-available/:sid', StudentGroupController.setNotAvailableTime);
 router.patch('/room/:gid', StudentGroupController.setRoomForMainGroup);
 router.get('/timetable/:sid', StudentGroupController.getTimetableByGroupId);
+
 module.exports = router;

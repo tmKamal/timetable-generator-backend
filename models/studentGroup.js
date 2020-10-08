@@ -38,6 +38,19 @@ const StudentGroupSchema = new Schema({
             default: 0
         }
     },
+    availablility: [
+        {
+            column: {
+                type: Number
+            },
+            stRow: {
+                type: Number
+            },
+            endRow: {
+                type: Number
+            }
+        }
+    ],
     timetable: [
         {
             column: {
@@ -49,14 +62,14 @@ const StudentGroupSchema = new Schema({
             endRow: {
                 type: Number
             },
-            sessions: [
-                {
-                    session: {
-                        type: mongoose.Types.ObjectId,
-                        ref: 'Session'
-                    }
-                }
-            ]
+            session1: {
+                type: mongoose.Types.ObjectId,
+                ref: 'Session'
+            },
+            session2: {
+                type: mongoose.Types.ObjectId,
+                ref: 'Session'
+            }
         }
     ],
     favRoom: [{ type: mongoose.Types.ObjectId, ref: 'Room' }]
