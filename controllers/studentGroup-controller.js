@@ -6,7 +6,15 @@ const getStudentGroupById = async (req, res, next) => {
     const sid = req.params.sid;
     let studentGroup;
     try {
-        studentGroup = await StudentGroup.findById(sid);
+        studentGroup = await StudentGroup.findById(sid).populate({
+            path: 'timetable.session1',
+            populate: [
+                { path: 'subject' },
+                { path: 'tag' },
+                { path: 'favRoom' },
+                { path: 'selectedLecturer', select: 'lecturerName' }
+            ]
+        });
     } catch (err) {
         const error = new HttpError('Something went wrong on DB side', 500);
         return next(error);
@@ -23,7 +31,15 @@ const getStudentGroupById = async (req, res, next) => {
 const getAllStudentGroups = async (req, res) => {
     let students;
     try {
-        students = await StudentGroup.find();
+        students = await StudentGroup.find().populate({
+            path: 'timetable.session1',
+            populate: [
+                { path: 'subject' },
+                { path: 'tag' },
+                { path: 'favRoom' },
+                { path: 'selectedLecturer', select: 'lecturerName' }
+            ]
+        });
     } catch (err) {
         const error = new HttpError('Something went wrong on DB', 500);
         return next(error);
@@ -182,18 +198,26 @@ const setRoomForMainGroup = async (req, res, next) => {
 
 const getTimetableByGroupId = async (req, res, next) => {
     const groupId = req.params.sid;
-    let group;
-
-    try {
-        group = await StudentGroup.findById(groupId);
-        console.log(group.groupId);
-        let ba = await generateForGroup(group);
-        res.json({ studentGroup: ba.toObject({ getters: true }) });
-    } catch (er) {
-        console.log(er);
-        const error = new HttpError('something went wrong on db side', 500);
-        return next(error);
+    const groups = await StudentGroup.find();
+    let len = 0;
+    let resu;
+    let err;
+    groups.forEach(async function (g) {
+        len++;
+        resu = await generateForGroup(g._id);
+        if (resu != 200) {
+            err = true;
+        }
+    });
+    if (err) {
+        return res.status(500).json({
+            message: 'Conflicts found while generating timetable',
+            status: 500
+        });
     }
+    return res
+        .status(200)
+        .json({ message: ' successfully generated', status: 200 });
 };
 
 exports.getAllStudentGroups = getAllStudentGroups;
