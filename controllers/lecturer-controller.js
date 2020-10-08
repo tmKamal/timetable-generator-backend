@@ -5,7 +5,7 @@ const getLecturerById = async (req, res, next) => {
     const lid = req.params.lid;
     let lecturer;
     try {
-        lecturer = await Building.findById(bid).populate({
+        lecturer = await Lecturer.findById(lid).populate({
             path: 'timetable.session1',
             populate: [
                 { path: 'subject' },
