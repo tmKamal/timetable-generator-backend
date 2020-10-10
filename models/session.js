@@ -74,7 +74,7 @@ const SessionSchema = new Schema({
             }
         }
     ],
-    favRoom: [{ type: mongoose.Types.ObjectId, ref: 'Room' }],
+    favRoom: { type: mongoose.Types.ObjectId, ref: 'Room' },
     selectedRoom: { type: mongoose.Types.ObjectId, ref: 'Room' },
     alive: { type: Boolean, default: true },
     type: { type: String, default: 'normal' },

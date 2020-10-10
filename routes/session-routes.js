@@ -4,7 +4,7 @@ const SessionController = require("../controllers/session-controller");
 const { AddSessionValidator } = require("../validators/session-validator");
 const { runValidation } = require("../validators/validator");
 
-router.post("/", SessionController.addSession);
+router.post("/", AddSessionValidator,runValidation,SessionController.addSession);
 router.get("/", SessionController.getAllSessions);
 router.patch("/room/:sid", SessionController.setRoomForSession);
 router.patch("/not-available/:sid", SessionController.setNotAvailableTime);

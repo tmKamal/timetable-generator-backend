@@ -47,6 +47,19 @@ const LecturerSchema = new Schema({
             default: 0
         }
     },
+    availablility: [
+        {
+            column: {
+                type: Number
+            },
+            stRow: {
+                type: Number
+            },
+            endRow: {
+                type: Number
+            }
+        }
+    ],
     timetable: [
         {
             column: {
@@ -58,14 +71,14 @@ const LecturerSchema = new Schema({
             endRow: {
                 type: Number
             },
-            sessions: [
-                {
-                    session: {
-                        type: mongoose.Types.ObjectId,
-                        ref: 'Session'
-                    }
-                }
-            ]
+            session1: {
+                type: mongoose.Types.ObjectId,
+                ref: 'Session'
+            },
+            session2: {
+                type: mongoose.Types.ObjectId,
+                ref: 'Session'
+            }
         }
     ]
 });
