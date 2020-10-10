@@ -35,6 +35,18 @@ const getAllRooms = async (req, res) => {
 const addRoom = async (req, res, next) => {
   const { roomName, roomType, roomCapacity, buildingId, roomTags } = req.body;
 
+  let rooms;
+  try {
+    rooms = await Room.find({roomName:roomName});
+  } catch (err) {
+    const error = new HttpError("something went wrong on our side! DB error", 500);
+    return next(error);
+  }
+  if(room){
+    const error = new HttpError("Room name is already taken.", 500);
+    return next(error);
+  }
+
   const newRoom = new Room({
     roomName,
     roomType,
