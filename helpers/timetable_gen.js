@@ -76,13 +76,7 @@ const generateForGroup = async (groupId, subGroups) => {
                     if (time.stRow >= 7) {
                         time.day = time.day + 1;
                         time.stRow = 0;
-                    } else {
-                        time.stRow =
-                            time.stRow +
-                            session1.duration +
-                            session2.duration +
-                            1;
-                    }
+                    } 
                     timetable.column = time.day;
                     timetable.stRow = time.stRow;
                     timetable.endRow =
@@ -120,12 +114,6 @@ const generateForGroup = async (groupId, subGroups) => {
                     if (time.stRow >= 7) {
                         time.day = time.day + 1;
                         time.stRow = 0;
-                    } else {
-                        time.stRow =
-                            time.stRow +
-                            session1.duration +
-                            session2.duration +
-                            1;
                     }
                     timetable.column = time.day;
                     timetable.stRow = time.stRow;
@@ -198,27 +186,29 @@ const generateForGroup = async (groupId, subGroups) => {
                         time.day = tempLec1.nextAvailable.day;
                         time.stRow = tempLec1.nextAvailable.stRow;
                     }
-                    if (time.stRow >= 7) {
+                    if (time.stRow >= 8) {
                         time.day = time.day + 1;
                         time.stRow = 0;
-                    } else {
-                        time.stRow = time.stRow + s.duration + 1;
-                    }
+                    } 
                 } else {
                     if (time.stRow <= tempLec1.nextAvailable.stRow) {
                         time.stRow = tempLec1.nextAvailable.stRow;
                     }
-                    if (time.stRow >= 7) {
+                    if (time.stRow >= 8) {
                         time.day = time.day + 1;
                         time.stRow = 0;
-                    } else {
-                        time.stRow = time.stRow + s.duration + 1;
-                    }
+                    } 
                 }
                 timetable.column = time.day;
                 timetable.stRow = time.stRow;
                 timetable.endRow = timetable.stRow + (s.duration - 1);
                 timetable.session1 = s._id;
+                if (time.stRow >= 8) {
+                    time.day = time.day + 1;
+                    time.stRow = 0;
+                } else {
+                    time.stRow = time.stRow + s.duration + 1;
+                }
                 group.nextAvailable = time;
                 group.timetable.unshift(timetable);
                 tempLec1.timetable.unshift(timetable);
