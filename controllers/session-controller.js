@@ -133,7 +133,7 @@ const setRoomForSession = async (req, res, next) => {
         return next(error);
     }
 
-    selectedSession.favRoom.push(roomId);
+    selectedSession.favRoom=roomId;
     try {
         await selectedSession.save();
     } catch (e) {
