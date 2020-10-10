@@ -107,6 +107,8 @@ const generateForGroup = async (groupId, subGroups) => {
                     tempLec1.nextAvailable = time;
                     tempLec1.timetable.unshift(timetable2);
                     tempLec1.timetable.unshift(timetable);
+                    room.timetable.unshift(timetable2);
+                    room.timetable.unshift(timetable);
                     group.nextAvailable = time;
                     group.timetable.unshift(timetable2);
                     group.timetable.unshift(timetable);
